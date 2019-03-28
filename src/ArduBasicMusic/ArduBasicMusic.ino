@@ -1,0 +1,206 @@
+/*
+ *                                        ARDUINO BASIC MUSIC GENERATOR
+ *                               ===============================================
+ *                           
+ *                           
+ * This code lets you play basic music sheets (one track) from ANY 'digitalWrite()' Arduino compatible board. Using a
+ * passive buzzer, a transistorized speaker or even a stepper motor with its corresponding driver you can play music :D
+ * 
+ * BUZZER_PIN    → (pinNumber) Digital output pin.
+ * 
+ * MUSIC_TEMPO   → (float) Number of crotchets per minute.
+ * 
+ * MUSIC_PITCH   → (float) This is a Frequency multiplier. For example an A4 note with a MUSIC_PITCH of 2.0 will sound 
+ *                  as an A5 (high octave is double frequency). Or a D3 note with a MUSIC_PITCH of 0.5 will 
+ *                  sound as a D2 (low octave is half frequency). A MUSIC_PITCH of 1.0 will keep notes as they are.
+ *                  
+ * INVERT_LOGIC  → By enabling this, output pin will be defined as inverted logic (to use with an inverted buzzer).
+ * 
+ * int musicFreqs[]       → In this int array, you can put your pre-defined music's notes or any frequency you want.
+ * 
+ * float musicSymbols[]   → In this float array, you can define the music symbols per each note:
+ *                           0.25 for a Semiquaver
+ *                           0.5  for a Quaver
+ *                           1.0  for a Crotchet
+ *                           2.0  for a Minim
+ *                           4.0  for a Semibreve
+ *                           0.33 for a Triplet of quavers
+ *                           and so on...
+ * 
+ * 
+ * 
+ * "THE BEERWARE LICENSE" (Revision 42):
+ * 
+ * Aaron G. wrote this code in January 2019. As long as you retain this 
+ * notice, you can do whatever you want with this stuff. If we meet someday, 
+ * and you think this stuff is worth it, you can buy me a beer in return.
+ * 
+ */
+
+
+
+// === Config ===
+#define BUZZER_PIN    4       // Digital output pin
+#define MUSIC_TEMPO   150.0   // Number of crotchets per minute
+#define MUSIC_PITCH   1.0     // Freq multiplier. For example an A4 note with a MUSIC_PITCH of 2.0 will sound as an A5. Or a D3 note with a MUSIC_PITCH of 0.5 will sound as a D2. A MUSIC_PITCH of 1.0 will keep notes as they are.
+//#define INVERT_LOGIC
+
+
+
+// === Pre-defined note frequencies (Hz) ===
+#define SILENT   0
+#define NOTE_B0  31
+#define NOTE_C1  33
+#define NOTE_CS1 35
+#define NOTE_D1  37
+#define NOTE_DS1 39
+#define NOTE_E1  41
+#define NOTE_F1  44
+#define NOTE_FS1 46
+#define NOTE_G1  49
+#define NOTE_GS1 52
+#define NOTE_A1  55
+#define NOTE_AS1 58
+#define NOTE_B1  62
+#define NOTE_C2  65
+#define NOTE_CS2 69
+#define NOTE_D2  73
+#define NOTE_DS2 78
+#define NOTE_E2  82
+#define NOTE_F2  87
+#define NOTE_FS2 93
+#define NOTE_G2  98
+#define NOTE_GS2 104
+#define NOTE_A2  110
+#define NOTE_AS2 117
+#define NOTE_B2  123
+#define NOTE_C3  131
+#define NOTE_CS3 139
+#define NOTE_D3  147
+#define NOTE_DS3 156
+#define NOTE_E3  165
+#define NOTE_F3  175
+#define NOTE_FS3 185
+#define NOTE_G3  196
+#define NOTE_GS3 208
+#define NOTE_A3  220
+#define NOTE_AS3 233
+#define NOTE_B3  247
+#define NOTE_C4  262
+#define NOTE_CS4 277
+#define NOTE_D4  294
+#define NOTE_DS4 311
+#define NOTE_E4  330
+#define NOTE_F4  349
+#define NOTE_FS4 370
+#define NOTE_G4  392
+#define NOTE_GS4 415
+#define NOTE_A4  440
+#define NOTE_AS4 466
+#define NOTE_B4  494
+#define NOTE_C5  523
+#define NOTE_CS5 554
+#define NOTE_D5  587
+#define NOTE_DS5 622
+#define NOTE_E5  659
+#define NOTE_F5  698
+#define NOTE_FS5 740
+#define NOTE_G5  784
+#define NOTE_GS5 831
+#define NOTE_A5  880
+#define NOTE_AS5 932
+#define NOTE_B5  988
+#define NOTE_C6  1047
+#define NOTE_CS6 1109
+#define NOTE_D6  1175
+#define NOTE_DS6 1245
+#define NOTE_E6  1319
+#define NOTE_F6  1397
+#define NOTE_FS6 1480
+#define NOTE_G6  1568
+#define NOTE_GS6 1661
+#define NOTE_A6  1760
+#define NOTE_AS6 1865
+#define NOTE_B6  1976
+#define NOTE_C7  2093
+#define NOTE_CS7 2217
+#define NOTE_D7  2349
+#define NOTE_DS7 2489
+#define NOTE_E7  2637
+#define NOTE_F7  2794
+#define NOTE_FS7 2960
+#define NOTE_G7  3136
+#define NOTE_GS7 3322
+#define NOTE_A7  3520
+#define NOTE_AS7 3729
+#define NOTE_B7  3951
+#define NOTE_C8  4186
+#define NOTE_CS8 4435
+#define NOTE_D8  4699
+#define NOTE_DS8 4978
+
+#ifdef INVERT_LOGIC
+  #define BZ_ON   LOW
+  #define BZ_OFF  HIGH
+#else
+  #define BZ_ON   HIGH
+  #define BZ_OFF  LOW
+#endif
+
+
+
+int counter;
+
+
+
+// === Sample music ===
+
+// La Cucaracha
+int musicFreqs[]=       { SILENT,NOTE_C5,NOTE_C5,NOTE_C5,NOTE_F5,SILENT,NOTE_A5,SILENT,NOTE_C5,NOTE_C5,NOTE_C5,SILENT,NOTE_F5,SILENT,NOTE_A5,SILENT,NOTE_F5,NOTE_F5,NOTE_E5,NOTE_E5,NOTE_D5,NOTE_D5,NOTE_C5,SILENT,NOTE_C5,NOTE_C5,NOTE_C5,NOTE_E5,SILENT,NOTE_G5,SILENT,NOTE_C5,NOTE_C5,NOTE_C5,NOTE_E5,SILENT,NOTE_G5,SILENT,NOTE_C6,NOTE_D6,NOTE_C6,NOTE_AS5,NOTE_A5,NOTE_G5,NOTE_F5    };
+float musicSymbols[]=   {   0.5,   0.5,    0.5,    0.5,    0.5,    0.5,   0.5,    0.5,    0.5,   0.5,    0.5,    0.5,   1.0,    0.5,   1.5,    1.0,   0.5,    0.5,    0.5,    0.5,   0.5,     0.5,    2.0,    0.5,    0.5,   0.5,    0.5,    1.0,    0.5,   0.5,    0.5,   0.5,    0.5,    0.5,    1.0,    0.5,   1.5,    1.0,   0.5,    0.5,    0.5,    0.5,    0.5,     0.5,    1.0      };
+
+
+/*
+// Despacito
+int musicFreqs[]=       { NOTE_B5,SILENT,NOTE_FS5,NOTE_B5,NOTE_CS6,NOTE_D6,NOTE_E6,NOTE_D6,NOTE_CS6,NOTE_B5,NOTE_A5,NOTE_G5,NOTE_D6,NOTE_D6,SILENT,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_E6,NOTE_CS6,SILENT,NOTE_B5,SILENT,NOTE_FS5,NOTE_B5,NOTE_CS6,NOTE_D6,NOTE_E6,NOTE_D6,NOTE_CS6,NOTE_B5,NOTE_A5,NOTE_G5,NOTE_D6,NOTE_D6,NOTE_E6,NOTE_D6,SILENT,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_E6,NOTE_CS6,SILENT,NOTE_B5,NOTE_B5,NOTE_B5,NOTE_B5,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_B5,NOTE_B5,NOTE_B5,NOTE_B5,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_E6,NOTE_A5,NOTE_A5,NOTE_A5,NOTE_A5,NOTE_A5,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_E6,NOTE_E6,NOTE_CS6,SILENT    };
+float musicSymbols[]=   {    1.0,  0.25,   0.25,    0.25,    0.25,   0.33,   0.33,   0.33,  0.33,    0.33,    0.33,   0.75,   0.75,   1.5,    1.0,   0.5,   0.5,    0.5,     0.5,    0.5,    0.5,    0.5,    0.25,   1.25,   3.0,    1.0,  0.25,   0.25,    0.25,    0.25,   0.33,   0.33,   0.33,  0.33,    0.33,    0.33,    0.75,   0.75,   0.25,   0.25,   1.0,   1.0,    0.5,   0.5,    0.5,     0.5,    0.5,    0.5,    0.5,    0.25,   1.25,   3.0,    1.0,   0.25,    0.25,   0.25,    0.25,  0.25,    0.25,    0.25,    0.5,   0.25,    0.5,    1.0,    0.25,    0.25,   0.25,   0.25,    0.25,   0.25,   0.25,     0.5,    0.25,   0.25,   1.25,   0.25,   0.25,   0.25,   0.25,   0.25,  0.25,    0.25,    0.25,    0.5,    0.25,   0.75,    1.0,    2.5     };
+*/
+
+/*
+// Happy Birthday
+int musicFreqs[]=       { NOTE_C6,NOTE_C6,NOTE_D6,NOTE_C6,NOTE_F6,NOTE_E6,NOTE_C6,NOTE_C6,NOTE_D6,NOTE_C6,NOTE_G6,NOTE_F6,NOTE_C6,NOTE_C6,NOTE_C7,NOTE_A6,NOTE_F6,NOTE_E6,NOTE_D6,NOTE_AS6,NOTE_AS6,NOTE_A6,NOTE_F6,NOTE_G6,NOTE_F6       };
+float musicSymbols[]=   {  0.5,    0.5,    1.0,    1.0,     1.0,    2.0,   0.5,     0.5,    1.0,    1.0,    1.0,   2.0,      0.5,   0.5,    1.0,    1.0,    1.0,    1.0,   2.0,     0.5,     0.5,     1.0,    1.0,    1.0,    4.0         };
+*/
+
+
+void generateTone(uint16_t noteFreq,uint16_t noteTime){
+  if(noteFreq==0){
+    digitalWrite(BUZZER_PIN,BZ_OFF);
+    delay(noteTime);
+  }else{
+    uint16_t semiPeriod=(uint16_t)(1000000/(noteFreq*2.0));
+    uint32_t startTime=millis();
+    do{
+      digitalWrite(BUZZER_PIN,BZ_ON);
+      delayMicroseconds(semiPeriod);
+      digitalWrite(BUZZER_PIN,BZ_OFF);
+      delayMicroseconds(semiPeriod);
+    }while((millis()-startTime)<noteTime);
+  }
+  delay(50);
+}
+
+
+
+void setup(){
+  // Make digital pin an OUTPUT
+  pinMode(BUZZER_PIN,OUTPUT);
+  
+  // A for() loop is used to play the whole song for one time, no matter the lenght of it
+  for(counter=0;counter<(sizeof(musicFreqs)/sizeof(int));counter++){
+    generateTone((int)(musicFreqs[counter]*MUSIC_PITCH),(int)((60000/MUSIC_TEMPO)*musicSymbols[counter]));
+  }
+}
+
+void loop(){
+}
