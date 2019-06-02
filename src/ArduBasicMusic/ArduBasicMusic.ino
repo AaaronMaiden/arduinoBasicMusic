@@ -8,11 +8,11 @@
  * 
  * BUZZER_PIN    → (pinNumber) Digital output pin.
  * 
- * MUSIC_TEMPO   → (float) Number of crotchets per minute.
+ * musicTempo   → (float) Number of crotchets per minute.
  * 
- * MUSIC_PITCH   → (float) This is a Frequency multiplier. For example an A4 note with a MUSIC_PITCH of 2.0 will sound 
- *                  as an A5 (high octave is double frequency). Or a D3 note with a MUSIC_PITCH of 0.5 will 
- *                  sound as a D2 (low octave is half frequency). A MUSIC_PITCH of 1.0 will keep notes as they are.
+ * musicPitch   → (float) This is a Frequency multiplier. For example an A4 note with a musicPitch of 2.0 will sound 
+ *                  as an A5 (high octave is double frequency). Or a D3 note with a musicPitch of 0.5 will 
+ *                  sound as a D2 (low octave is half frequency). A musicPitch of 1.0 will keep notes as they are.
  *                  
  * INVERT_LOGIC  → By enabling this, output pin will be defined as inverted logic (to use with an inverted buzzer).
  * 
@@ -40,10 +40,9 @@
 
 
 // === Config ===
-#define BUZZER_PIN    4       // Digital output pin
-#define MUSIC_TEMPO   150.0   // Number of crotchets per minute
-#define MUSIC_PITCH   1.0     // Freq multiplier. For example an A4 note with a MUSIC_PITCH of 2.0 will sound as an A5. Or a D3 note with a MUSIC_PITCH of 0.5 will sound as a D2. A MUSIC_PITCH of 1.0 will keep notes as they are.
+#define BUZZER_PIN        2       // Digital output pin
 //#define INVERT_LOGIC
+#define STEPPER_ENABLE    8
 
 
 
@@ -148,29 +147,30 @@
 #endif
 
 
-
+float musicTempo;       // Number of crotchets per minute
+float musicPitch;       // Freq multiplier. For example an A4 note with a musicPitch of 2.0 will sound as an A5. Or a D3 note with a musicPitch of 0.5 will sound as a D2. A musicPitch of 1.0 will keep notes as they are.
 int counter;
 
 
 
 // === Sample music ===
 
+// Super Mario
+int musicFreqsMario[]=       { NOTE_E7, NOTE_E7, 0, NOTE_E7,0, NOTE_C7, NOTE_E7, 0,NOTE_G7, 0, 0,  0,NOTE_G6, 0, 0, 0,NOTE_C7, 0, 0, NOTE_G6,0, 0, NOTE_E6, 0,0, NOTE_A6, 0, NOTE_B6,0, NOTE_AS6, NOTE_A6, 0,NOTE_G6, NOTE_E7, NOTE_G7,NOTE_A7, 0, NOTE_F7, NOTE_G7,0, NOTE_E7, 0, NOTE_C7,NOTE_D7, NOTE_B6, 0, 0,NOTE_C7, 0, 0, NOTE_G6,0, 0, NOTE_E6, 0,0, NOTE_A6, 0, NOTE_B6,0, NOTE_AS6, NOTE_A6, 0,NOTE_G6, NOTE_E7, NOTE_G7,NOTE_A7, 0, NOTE_F7, NOTE_G7,0, NOTE_E7, 0, NOTE_C7,NOTE_D7, NOTE_B6, 0, 0};
+float musicSymbolsMario[]=   {1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,0.75, 0.75, 0.75,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,0.75, 0.75, 0.75,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0,1.0, 1.0, 1.0, 1.0};
+
 // La Cucaracha
-int musicFreqs[]=       { SILENT,NOTE_C5,NOTE_C5,NOTE_C5,NOTE_F5,SILENT,NOTE_A5,SILENT,NOTE_C5,NOTE_C5,NOTE_C5,SILENT,NOTE_F5,SILENT,NOTE_A5,SILENT,NOTE_F5,NOTE_F5,NOTE_E5,NOTE_E5,NOTE_D5,NOTE_D5,NOTE_C5,SILENT,NOTE_C5,NOTE_C5,NOTE_C5,NOTE_E5,SILENT,NOTE_G5,SILENT,NOTE_C5,NOTE_C5,NOTE_C5,NOTE_E5,SILENT,NOTE_G5,SILENT,NOTE_C6,NOTE_D6,NOTE_C6,NOTE_AS5,NOTE_A5,NOTE_G5,NOTE_F5    };
-float musicSymbols[]=   {   0.5,   0.5,    0.5,    0.5,    0.5,    0.5,   0.5,    0.5,    0.5,   0.5,    0.5,    0.5,   1.0,    0.5,   1.5,    1.0,   0.5,    0.5,    0.5,    0.5,   0.5,     0.5,    2.0,    0.5,    0.5,   0.5,    0.5,    1.0,    0.5,   0.5,    0.5,   0.5,    0.5,    0.5,    1.0,    0.5,   1.5,    1.0,   0.5,    0.5,    0.5,    0.5,    0.5,     0.5,    1.0      };
+int musicFreqsCucaracha[]=       { SILENT,NOTE_C5,NOTE_C5,NOTE_C5,NOTE_F5,SILENT,NOTE_A5,SILENT,NOTE_C5,NOTE_C5,NOTE_C5,SILENT,NOTE_F5,SILENT,NOTE_A5,SILENT,NOTE_F5,NOTE_F5,NOTE_E5,NOTE_E5,NOTE_D5,NOTE_D5,NOTE_C5,SILENT,NOTE_C5,NOTE_C5,NOTE_C5,NOTE_E5,SILENT,NOTE_G5,SILENT,NOTE_C5,NOTE_C5,NOTE_C5,NOTE_E5,SILENT,NOTE_G5,SILENT,NOTE_C6,NOTE_D6,NOTE_C6,NOTE_AS5,NOTE_A5,NOTE_G5,NOTE_F5    };
+float musicSymbolsCucaracha[]=   {   0.5,   0.5,    0.5,    0.5,    0.5,    0.5,   0.5,    0.5,    0.5,   0.5,    0.5,    0.5,   1.0,    0.5,   1.5,    1.0,   0.5,    0.5,    0.5,    0.5,   0.5,     0.5,    2.0,    0.5,    0.5,   0.5,    0.5,    1.0,    0.5,   0.5,    0.5,   0.5,    0.5,    0.5,    1.0,    0.5,   1.5,    1.0,   0.5,    0.5,    0.5,    0.5,    0.5,     0.5,    1.0      };
 
-
-/*
 // Despacito
-int musicFreqs[]=       { NOTE_B5,SILENT,NOTE_FS5,NOTE_B5,NOTE_CS6,NOTE_D6,NOTE_E6,NOTE_D6,NOTE_CS6,NOTE_B5,NOTE_A5,NOTE_G5,NOTE_D6,NOTE_D6,SILENT,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_E6,NOTE_CS6,SILENT,NOTE_B5,SILENT,NOTE_FS5,NOTE_B5,NOTE_CS6,NOTE_D6,NOTE_E6,NOTE_D6,NOTE_CS6,NOTE_B5,NOTE_A5,NOTE_G5,NOTE_D6,NOTE_D6,NOTE_E6,NOTE_D6,SILENT,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_E6,NOTE_CS6,SILENT,NOTE_B5,NOTE_B5,NOTE_B5,NOTE_B5,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_B5,NOTE_B5,NOTE_B5,NOTE_B5,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_E6,NOTE_A5,NOTE_A5,NOTE_A5,NOTE_A5,NOTE_A5,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_E6,NOTE_E6,NOTE_CS6,SILENT    };
-float musicSymbols[]=   {    1.0,  0.25,   0.25,    0.25,    0.25,   0.33,   0.33,   0.33,  0.33,    0.33,    0.33,   0.75,   0.75,   1.5,    1.0,   0.5,   0.5,    0.5,     0.5,    0.5,    0.5,    0.5,    0.25,   1.25,   3.0,    1.0,  0.25,   0.25,    0.25,    0.25,   0.33,   0.33,   0.33,  0.33,    0.33,    0.33,    0.75,   0.75,   0.25,   0.25,   1.0,   1.0,    0.5,   0.5,    0.5,     0.5,    0.5,    0.5,    0.5,    0.25,   1.25,   3.0,    1.0,   0.25,    0.25,   0.25,    0.25,  0.25,    0.25,    0.25,    0.5,   0.25,    0.5,    1.0,    0.25,    0.25,   0.25,   0.25,    0.25,   0.25,   0.25,     0.5,    0.25,   0.25,   1.25,   0.25,   0.25,   0.25,   0.25,   0.25,  0.25,    0.25,    0.25,    0.5,    0.25,   0.75,    1.0,    2.5     };
-*/
+int musicFreqsDespacito[]=       { NOTE_B5,SILENT,NOTE_FS5,NOTE_B5,NOTE_CS6,NOTE_D6,NOTE_E6,NOTE_D6,NOTE_CS6,NOTE_B5,NOTE_A5,NOTE_G5,NOTE_D6,NOTE_D6,SILENT,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_E6,NOTE_CS6,SILENT,NOTE_B5,SILENT,NOTE_FS5,NOTE_B5,NOTE_CS6,NOTE_D6,NOTE_E6,NOTE_D6,NOTE_CS6,NOTE_B5,NOTE_A5,NOTE_G5,NOTE_D6,NOTE_D6,NOTE_E6,NOTE_D6,SILENT,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_A5,NOTE_D6,NOTE_E6,NOTE_CS6,SILENT,NOTE_B5,NOTE_B5,NOTE_B5,NOTE_B5,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_B5,NOTE_B5,NOTE_B5,NOTE_B5,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_E6,NOTE_A5,NOTE_A5,NOTE_A5,NOTE_A5,NOTE_A5,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_CS6,NOTE_D6,NOTE_E6,NOTE_E6,NOTE_CS6,SILENT    };
+float musicSymbolsDespacito[]=   {    1.0,  0.25,   0.25,    0.25,    0.25,   0.33,   0.33,   0.33,  0.33,    0.33,    0.33,   0.75,   0.75,   1.5,    1.0,   0.5,   0.5,    0.5,     0.5,    0.5,    0.5,    0.5,    0.25,   1.25,   3.0,    1.0,  0.25,   0.25,    0.25,    0.25,   0.33,   0.33,   0.33,  0.33,    0.33,    0.33,    0.75,   0.75,   0.25,   0.25,   1.0,   1.0,    0.5,   0.5,    0.5,     0.5,    0.5,    0.5,    0.5,    0.25,   1.25,   3.0,    1.0,   0.25,    0.25,   0.25,    0.25,  0.25,    0.25,    0.25,    0.5,   0.25,    0.5,    1.0,    0.25,    0.25,   0.25,   0.25,    0.25,   0.25,   0.25,     0.5,    0.25,   0.25,   1.25,   0.25,   0.25,   0.25,   0.25,   0.25,  0.25,    0.25,    0.25,    0.5,    0.25,   0.75,    1.0,    2.5     };
 
-/*
 // Happy Birthday
-int musicFreqs[]=       { NOTE_C6,NOTE_C6,NOTE_D6,NOTE_C6,NOTE_F6,NOTE_E6,NOTE_C6,NOTE_C6,NOTE_D6,NOTE_C6,NOTE_G6,NOTE_F6,NOTE_C6,NOTE_C6,NOTE_C7,NOTE_A6,NOTE_F6,NOTE_E6,NOTE_D6,NOTE_AS6,NOTE_AS6,NOTE_A6,NOTE_F6,NOTE_G6,NOTE_F6       };
-float musicSymbols[]=   {  0.5,    0.5,    1.0,    1.0,     1.0,    2.0,   0.5,     0.5,    1.0,    1.0,    1.0,   2.0,      0.5,   0.5,    1.0,    1.0,    1.0,    1.0,   2.0,     0.5,     0.5,     1.0,    1.0,    1.0,    4.0         };
-*/
+int musicFreqsBirthday[]=       { NOTE_C6,NOTE_C6,NOTE_D6,NOTE_C6,NOTE_F6,NOTE_E6,NOTE_C6,NOTE_C6,NOTE_D6,NOTE_C6,NOTE_G6,NOTE_F6,NOTE_C6,NOTE_C6,NOTE_C7,NOTE_A6,NOTE_F6,NOTE_E6,NOTE_D6,NOTE_AS6,NOTE_AS6,NOTE_A6,NOTE_F6,NOTE_G6,NOTE_F6       };
+float musicSymbolsBirthday[]=   {  0.5,    0.5,    1.0,    1.0,     1.0,    2.0,   0.5,     0.5,    1.0,    1.0,    1.0,   2.0,      0.5,   0.5,    1.0,    1.0,    1.0,    1.0,   2.0,     0.5,     0.5,     1.0,    1.0,    1.0,    4.0         };
+
 
 
 void generateTone(uint16_t noteFreq,uint16_t noteTime){
@@ -195,11 +195,51 @@ void generateTone(uint16_t noteFreq,uint16_t noteTime){
 void setup(){
   // Make digital pin an OUTPUT
   pinMode(BUZZER_PIN,OUTPUT);
-  
+  pinMode(STEPPER_ENABLE,OUTPUT);
+
+  // Enable Stepper motor in case of using one
+  digitalWrite(STEPPER_ENABLE,HIGH);
+
+
   // A for() loop is used to play the whole song for one time, no matter the lenght of it
-  for(counter=0;counter<(sizeof(musicFreqs)/sizeof(int));counter++){
-    generateTone((int)(musicFreqs[counter]*MUSIC_PITCH),(int)((60000/MUSIC_TEMPO)*musicSymbols[counter]));
+
+  // Play Super Mario Theme
+  musicTempo=500;
+  musicPitch=0.5;
+  for(counter=0;counter<(sizeof(musicFreqsMario)/sizeof(int));counter++){
+    generateTone((int)(musicFreqsMario[counter]*musicPitch),(int)((60000/musicTempo)*musicSymbolsMario[counter]));
   }
+  delay(2000);
+
+
+  // Play La Cucaracha
+  musicTempo=180;
+  musicPitch=1.5;
+  for(counter=0;counter<(sizeof(musicFreqsCucaracha)/sizeof(int));counter++){
+    generateTone((int)(musicFreqsCucaracha[counter]*musicPitch),(int)((60000/musicTempo)*musicSymbolsCucaracha[counter]));
+  }
+  delay(2000);
+
+
+  // Play Despacito
+  musicTempo=178;
+  musicPitch=1.5;
+  for(counter=0;counter<(sizeof(musicFreqsDespacito)/sizeof(int));counter++){
+    generateTone((int)(musicFreqsDespacito[counter]*musicPitch),(int)((60000/musicTempo)*musicSymbolsDespacito[counter]));
+  }
+  delay(2000);
+
+
+  // Play Happy Birthday
+  musicTempo=104;
+  musicPitch=1.5;
+  for(counter=0;counter<(sizeof(musicFreqsBirthday)/sizeof(int));counter++){
+    generateTone((int)(musicFreqsBirthday[counter]*musicPitch),(int)((60000/musicTempo)*musicSymbolsBirthday[counter]));
+  }
+
+
+
+  digitalWrite(8,LOW);
 }
 
 void loop(){
