@@ -6,17 +6,15 @@
    This code lets you play basic music sheets (one track) from ANY 'digitalWrite()' Arduino compatible board. Using a
    passive buzzer, a transistorized speaker or even a stepper motor with its corresponding driver you can play music :D
 
-   BUZZER_PIN    → (pinNumber) Digital output pin.
+   BUZZER_PIN    → (pinNumber) Digital output pin
 
-   musicTempo   → (float) Number of crotchets per minute.
+   musicTempo   → (float) Number of crotchet per minute
 
-   musicPitch   → (float) This is a Frequency multiplier. For example an A4 note with a musicPitch of 2.0 will sound
-                    as an A5 (high octave is double frequency). Or a D3 note with a musicPitch of 0.5 will
-                    sound as a D2 (low octave is half frequency). A musicPitch of 1.0 will keep notes as they are.
+   musicPitch   → (float) Change pitch in semitones. 0 is no change at all. Positive values are high-pitched and negative ones are low-pitched
 
-   INVERT_LOGIC  → By enabling this, output pin will be defined as inverted logic (to use with an inverted buzzer).
+   INVERT_LOGIC  → By enabling this, output pin will be defined as inverted logic (to use with an inverted buzzer)
 
-   int musicFreqs[]       → In this int array, you can put your pre-defined music's notes or any frequency you want.
+   int musicFreqs[]       → In this int array, you can put your pre-defined music's notes or any frequency you want
 
    float musicSymbols[]   → In this float array, you can define the music symbols per each note:
                              0.25 for a Semiquaver
@@ -146,7 +144,7 @@
 
 
 float musicTempo = 120;     // Number of crotchets per minute
-float musicPitch = 0;       // Note change in semitones. 0 is no change at all. Positive values are high-pitched and negative ones are low-pitched
+float musicPitch = 0;       // Note change in semitones
 float freqChange;
 int counter;
 
@@ -162,7 +160,7 @@ float musicSymbolsMario[] =   {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
 int musicFreqsCucaracha[] =       { SILENT, NOTE_C5, NOTE_C5, NOTE_C5, NOTE_F5, SILENT, NOTE_A5, SILENT, NOTE_C5, NOTE_C5, NOTE_C5, SILENT, NOTE_F5, SILENT, NOTE_A5, SILENT, NOTE_F5, NOTE_F5, NOTE_E5, NOTE_E5, NOTE_D5, NOTE_D5, NOTE_C5, SILENT, NOTE_C5, NOTE_C5, NOTE_C5, NOTE_E5, SILENT, NOTE_G5, SILENT, NOTE_C5, NOTE_C5, NOTE_C5, NOTE_E5, SILENT, NOTE_G5, SILENT, NOTE_C6, NOTE_D6, NOTE_C6, NOTE_AS5, NOTE_A5, NOTE_G5, NOTE_F5    };
 float musicSymbolsCucaracha[] =   {   0.5,   0.5,    0.5,    0.5,    0.5,    0.5,   0.5,    0.5,    0.5,   0.5,    0.5,    0.5,   1.0,    0.5,   1.5,    1.0,   0.5,    0.5,    0.5,    0.5,   0.5,     0.5,    2.0,    0.5,    0.5,   0.5,    0.5,    1.0,    0.5,   0.5,    0.5,   0.5,    0.5,    0.5,    1.0,    0.5,   1.5,    1.0,   0.5,    0.5,    0.5,    0.5,    0.5,     0.5,    1.0      };
 
-// Despacito
+// Despacito<
 int musicFreqsDespacito[] =       { NOTE_B5, SILENT, NOTE_FS5, NOTE_B5, NOTE_CS6, NOTE_D6, NOTE_E6, NOTE_D6, NOTE_CS6, NOTE_B5, NOTE_A5, NOTE_G5, NOTE_D6, NOTE_D6, SILENT, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_E6, NOTE_CS6, SILENT, NOTE_B5, SILENT, NOTE_FS5, NOTE_B5, NOTE_CS6, NOTE_D6, NOTE_E6, NOTE_D6, NOTE_CS6, NOTE_B5, NOTE_A5, NOTE_G5, NOTE_D6, NOTE_D6, NOTE_E6, NOTE_D6, SILENT, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_E6, NOTE_CS6, SILENT, NOTE_B5, NOTE_B5, NOTE_B5, NOTE_B5, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_B5, NOTE_B5, NOTE_B5, NOTE_B5, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_E6, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_E6, NOTE_E6, NOTE_CS6, SILENT    };
 float musicSymbolsDespacito[] =   {    1.0,  0.25,   0.25,    0.25,    0.25,   0.33,   0.33,   0.33,  0.33,    0.33,    0.33,   0.75,   0.75,   1.5,    1.0,   0.5,   0.5,    0.5,     0.5,    0.5,    0.5,    0.5,    0.25,   1.25,   3.0,    1.0,  0.25,   0.25,    0.25,    0.25,   0.33,   0.33,   0.33,  0.33,    0.33,    0.33,    0.75,   0.75,   0.25,   0.25,   1.0,   1.0,    0.5,   0.5,    0.5,     0.5,    0.5,    0.5,    0.5,    0.25,   1.25,   3.0,    1.0,   0.25,    0.25,   0.25,    0.25,  0.25,    0.25,    0.25,    0.5,   0.25,    0.5,    1.0,    0.25,    0.25,   0.25,   0.25,    0.25,   0.25,   0.25,     0.5,    0.25,   0.25,   1.25,   0.25,   0.25,   0.25,   0.25,   0.25,  0.25,    0.25,    0.25,    0.5,    0.25,   0.75,    1.0,    2.5     };
 
