@@ -35,104 +35,13 @@
 
 */
 
+#include "frequencies.h"
+
 // === Config ===
 #define BUZZER_PIN        2     // Digital output pin
 //#define INVERT_LOGIC
 #define STEPPER_ENABLE    8
 
-
-
-// === Pre-defined note frequencies (Hz) ===
-#define SILENT   0
-#define NOTE_B0  31
-#define NOTE_C1  33
-#define NOTE_CS1 35
-#define NOTE_D1  37
-#define NOTE_DS1 39
-#define NOTE_E1  41
-#define NOTE_F1  44
-#define NOTE_FS1 46
-#define NOTE_G1  49
-#define NOTE_GS1 52
-#define NOTE_A1  55
-#define NOTE_AS1 58
-#define NOTE_B1  62
-#define NOTE_C2  65
-#define NOTE_CS2 69
-#define NOTE_D2  73
-#define NOTE_DS2 78
-#define NOTE_E2  82
-#define NOTE_F2  87
-#define NOTE_FS2 93
-#define NOTE_G2  98
-#define NOTE_GS2 104
-#define NOTE_A2  110
-#define NOTE_AS2 117
-#define NOTE_B2  123
-#define NOTE_C3  131
-#define NOTE_CS3 139
-#define NOTE_D3  147
-#define NOTE_DS3 156
-#define NOTE_E3  165
-#define NOTE_F3  175
-#define NOTE_FS3 185
-#define NOTE_G3  196
-#define NOTE_GS3 208
-#define NOTE_A3  220
-#define NOTE_AS3 233
-#define NOTE_B3  247
-#define NOTE_C4  262
-#define NOTE_CS4 277
-#define NOTE_D4  294
-#define NOTE_DS4 311
-#define NOTE_E4  330
-#define NOTE_F4  349
-#define NOTE_FS4 370
-#define NOTE_G4  392
-#define NOTE_GS4 415
-#define NOTE_A4  440
-#define NOTE_AS4 466
-#define NOTE_B4  494
-#define NOTE_C5  523
-#define NOTE_CS5 554
-#define NOTE_D5  587
-#define NOTE_DS5 622
-#define NOTE_E5  659
-#define NOTE_F5  698
-#define NOTE_FS5 740
-#define NOTE_G5  784
-#define NOTE_GS5 831
-#define NOTE_A5  880
-#define NOTE_AS5 932
-#define NOTE_B5  988
-#define NOTE_C6  1047
-#define NOTE_CS6 1109
-#define NOTE_D6  1175
-#define NOTE_DS6 1245
-#define NOTE_E6  1319
-#define NOTE_F6  1397
-#define NOTE_FS6 1480
-#define NOTE_G6  1568
-#define NOTE_GS6 1661
-#define NOTE_A6  1760
-#define NOTE_AS6 1865
-#define NOTE_B6  1976
-#define NOTE_C7  2093
-#define NOTE_CS7 2217
-#define NOTE_D7  2349
-#define NOTE_DS7 2489
-#define NOTE_E7  2637
-#define NOTE_F7  2794
-#define NOTE_FS7 2960
-#define NOTE_G7  3136
-#define NOTE_GS7 3322
-#define NOTE_A7  3520
-#define NOTE_AS7 3729
-#define NOTE_B7  3951
-#define NOTE_C8  4186
-#define NOTE_CS8 4435
-#define NOTE_D8  4699
-#define NOTE_DS8 4978
 
 #ifdef INVERT_LOGIC
 #define BZ_ON   LOW
@@ -152,27 +61,26 @@ int counter;
 
 // === Sample music ===
 
-// Super Mario
-int musicFreqsJingle[] =       {NOTE_D6, NOTE_B6, NOTE_A6, NOTE_G6, NOTE_D6, NOTE_D6, NOTE_D6, NOTE_D6, NOTE_B6, NOTE_A6, NOTE_G6, NOTE_E6, 0,  NOTE_E6, NOTE_C7, NOTE_B6, NOTE_A6, NOTE_FS6, 0,   NOTE_D7, NOTE_D7, NOTE_C7, NOTE_A6, NOTE_B6,  NOTE_D6, NOTE_B6, NOTE_A6, NOTE_G6, NOTE_D6, NOTE_D6, NOTE_D6, NOTE_D6, NOTE_B6, NOTE_A6, NOTE_G6, NOTE_E6, 0,  NOTE_E6, NOTE_C7, NOTE_B6, NOTE_A6, NOTE_D7, NOTE_D7, NOTE_D7, NOTE_D7, NOTE_E7, NOTE_D7, NOTE_C7, NOTE_A6, NOTE_G6, 0,   NOTE_B6, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_D7, NOTE_G6, NOTE_A6, NOTE_B6, NOTE_C7, NOTE_C7, NOTE_C7, NOTE_C7, NOTE_C7, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_A6, NOTE_A6, NOTE_B6, NOTE_A6, NOTE_D7, 0};
-float musicSymbolsJingle[] =   {1.0,     1.0,     1.0,     1.0,     3.0,     0.5,     0.5,     1.0,     1.0,     1.0,     1.0,     3.0,     1.0,1.0,     1.0,     1.0,     1.0,     3.0,      1.0, 1.0,     1.0,     1.0,     1.0,     4.0,      1.0,     1.0,     1.0,     1.0,     3.0,     0.5,     0.5,     1.0,     1.0,     1.0,     1.0,     3.0,     1.0,1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     3.0,     1.0, 1.0,     1.0,     2.0,     1.0,     1.0,     2.0,     1.0,     1.0,     1.5,     0.5,     3.0,     1.0,     1.0,     1.5,     0.5,     1.0,     1.0,     1.0,     0.5,     0.5,     1.0,     1.0,     1.0,     1.0,     2.0,     1.0,     1.0};
+// Jingle Bells
+int musicFreqsJingle[] =          {D6,  B6,  A6,  G6,  D6,  D6,  D6,  D6,  B6,  A6,  G6,  E6,  0,   E6,  C7,  B6,  A6,  FS6,  0,  D7,  D7,  C7,  A6,  B6,  D6,  B6,  A6,  G6,  D6,  D6,  D6,  D6,  B6,  A6,  G6,  E6,  0,   E6,  C7,  B6,  A6,  D7,  D7,  D7,  D7,  E7,  D7,  C7,  A6,  G6,  0,   B6,  B6,  B6,  B6,  B6,  B6,  B6,  D7,  G6,  A6,  B6,  C7,  C7,  C7,  C7,  C7,  B6,  B6,  B6,  B6,  B6,  A6,  A6,  B6,  A6,  D7,  0,   B6,  B6,  B6,  B6,  B6,  B6,  B6,  D7,  G6,  A6,  B6,  0,   C7,  C7,  C7,  C7,  C7,  B6,  B6,  B6,  B6,  D7,  D7,  C7,  A6,  G6,  0};
+float musicSymbolsJingle[] =      {1.0, 1.0, 1.0, 1.0, 3.0, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 3.0, 1.0, 1.0, 1.0, 1.0, 1.0, 3.0, 1.0, 1.0, 1.0, 1.0, 1.0, 4.0, 1.0, 1.0, 1.0, 1.0, 3.0, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 3.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 3.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.5, 0.5, 3.0, 1.0, 1.0, 1.5, 0.5, 1.0, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.5, 0.5, 3.0, 1.0, 1.0, 1.0, 1.5, 0.5, 1.0, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 3.0, 1.0};
+/*
+// Happy Birthday
+int musicFreqsBirthday[] =        {C6,  C6,  D6,  C6,  F6,  E6,  C6,  C6,  D6,  C6,  G6,  F6,  C6,  C6,  C7,  A6,  F6,  E6,  D6,  AS6, AS6, A6,  F6,  G6,  F6};
+float musicSymbolsBirthday[] =    {0.5, 0.5, 1.0, 1.0, 1.0, 2.0, 0.5, 0.5, 1.0, 1.0, 1.0, 2.0, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 0.5, 1.0, 1.0, 1.0, 4.0};
 
 // Super Mario
-int musicFreqsMario[] =       { NOTE_E7, NOTE_E7, 0, NOTE_E7, 0, NOTE_C7, NOTE_E7, 0, NOTE_G7, 0, 0,  0, NOTE_G6, 0, 0, 0, NOTE_C7, 0, 0, NOTE_G6, 0, 0, NOTE_E6, 0, 0, NOTE_A6, 0, NOTE_B6, 0, NOTE_AS6, NOTE_A6, 0, NOTE_G6, NOTE_E7, NOTE_G7, NOTE_A7, 0, NOTE_F7, NOTE_G7, 0, NOTE_E7, 0, NOTE_C7, NOTE_D7, NOTE_B6, 0, 0, NOTE_C7, 0, 0, NOTE_G6, 0, 0, NOTE_E6, 0, 0, NOTE_A6, 0, NOTE_B6, 0, NOTE_AS6, NOTE_A6, 0, NOTE_G6, NOTE_E7, NOTE_G7, NOTE_A7, 0, NOTE_F7, NOTE_G7, 0, NOTE_E7, 0, NOTE_C7, NOTE_D7, NOTE_B6, 0, 0};
-float musicSymbolsMario[] =   {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.75, 0.75, 0.75, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.75, 0.75, 0.75, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+int musicFreqsMario[] =           {E7,  E7,  0,   E7,  0,   C7,  E7,  0,   G7,  0,   0,   0,   G6,  0,   0,   0,   C7,  0,   0,   G6,  0,   0,   E6,  0,   0,   A6,  0,   B6,  0,   AS6, A6,  0,   G6,   E7,   G7,   A7,  0,   F7,  G7,  0,   E7,  0,   C7,  D7,  B6,  0,   0,   C7,  0,   0,   G6,  0,   0,   E6,  0,   0,   A6,  0,   B6,  0,   AS6, A6,  0,   G6,   E7,   G7,   A7,  0,   F7,  G7,  0,   E7,  0,   C7,  D7,  B6,  0,   0};
+float musicSymbolsMario[] =       {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.75, 0.75, 0.75, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.75, 0.75, 0.75, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 
 // La Cucaracha
-int musicFreqsCucaracha[] =       { SILENT, NOTE_C5, NOTE_C5, NOTE_C5, NOTE_F5, SILENT, NOTE_A5, SILENT, NOTE_C5, NOTE_C5, NOTE_C5, SILENT, NOTE_F5, SILENT, NOTE_A5, SILENT, NOTE_F5, NOTE_F5, NOTE_E5, NOTE_E5, NOTE_D5, NOTE_D5, NOTE_C5, SILENT, NOTE_C5, NOTE_C5, NOTE_C5, NOTE_E5, SILENT, NOTE_G5, SILENT, NOTE_C5, NOTE_C5, NOTE_C5, NOTE_E5, SILENT, NOTE_G5, SILENT, NOTE_C6, NOTE_D6, NOTE_C6, NOTE_AS5, NOTE_A5, NOTE_G5, NOTE_F5    };
-float musicSymbolsCucaracha[] =   {   0.5,   0.5,    0.5,    0.5,    0.5,    0.5,   0.5,    0.5,    0.5,   0.5,    0.5,    0.5,   1.0,    0.5,   1.5,    1.0,   0.5,    0.5,    0.5,    0.5,   0.5,     0.5,    2.0,    0.5,    0.5,   0.5,    0.5,    1.0,    0.5,   0.5,    0.5,   0.5,    0.5,    0.5,    1.0,    0.5,   1.5,    1.0,   0.5,    0.5,    0.5,    0.5,    0.5,     0.5,    1.0      };
+int musicFreqsCucaracha[] =       {0,   C5,  C5,  C5,  F5,  0,   A5,  0,   C5,  C5,  C5,  0,   F5,  0,   A5,  0,   F5,  F5,  E5,  E5,  D5,  D5,  C5,  0,   C5,  C5,  C5,  E5,  0,   G5,  0,   C5,  C5,  C5,  E5,  0,   G5,  0,   C6,  D6,  C6,  AS5, A5,  G5,  F5};
+float musicSymbolsCucaracha[] =   {0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 0.5, 1.5, 1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 2.0, 0.5, 0.5, 0.5, 0.5, 1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 0.5, 1.5, 1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0 };
 
 // Despacito
-int musicFreqsDespacito[] =       { NOTE_B5, SILENT, NOTE_FS5, NOTE_B5, NOTE_CS6, NOTE_D6, NOTE_E6, NOTE_D6, NOTE_CS6, NOTE_B5, NOTE_A5, NOTE_G5, NOTE_D6, NOTE_D6, SILENT, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_E6, NOTE_CS6, SILENT, NOTE_B5, SILENT, NOTE_FS5, NOTE_B5, NOTE_CS6, NOTE_D6, NOTE_E6, NOTE_D6, NOTE_CS6, NOTE_B5, NOTE_A5, NOTE_G5, NOTE_D6, NOTE_D6, NOTE_E6, NOTE_D6, SILENT, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_E6, NOTE_CS6, SILENT, NOTE_B5, NOTE_B5, NOTE_B5, NOTE_B5, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_B5, NOTE_B5, NOTE_B5, NOTE_B5, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_E6, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_E6, NOTE_E6, NOTE_CS6, SILENT    };
-float musicSymbolsDespacito[] =   {    1.0,  0.25,   0.25,    0.25,    0.25,   0.33,   0.33,   0.33,  0.33,    0.33,    0.33,   0.75,   0.75,   1.5,    1.0,   0.5,   0.5,    0.5,     0.5,    0.5,    0.5,    0.5,    0.25,   1.25,   3.0,    1.0,  0.25,   0.25,    0.25,    0.25,   0.33,   0.33,   0.33,  0.33,    0.33,    0.33,    0.75,   0.75,   0.25,   0.25,   1.0,   1.0,    0.5,   0.5,    0.5,     0.5,    0.5,    0.5,    0.5,    0.25,   1.25,   3.0,    1.0,   0.25,    0.25,   0.25,    0.25,  0.25,    0.25,    0.25,    0.5,   0.25,    0.5,    1.0,    0.25,    0.25,   0.25,   0.25,    0.25,   0.25,   0.25,     0.5,    0.25,   0.25,   1.25,   0.25,   0.25,   0.25,   0.25,   0.25,  0.25,    0.25,    0.25,    0.5,    0.25,   0.75,    1.0,    2.5     };
-
-// Happy Birthday
-int musicFreqsBirthday[] =       { NOTE_C6, NOTE_C6, NOTE_D6, NOTE_C6, NOTE_F6, NOTE_E6, NOTE_C6, NOTE_C6, NOTE_D6, NOTE_C6, NOTE_G6, NOTE_F6, NOTE_C6, NOTE_C6, NOTE_C7, NOTE_A6, NOTE_F6, NOTE_E6, NOTE_D6, NOTE_AS6, NOTE_AS6, NOTE_A6, NOTE_F6, NOTE_G6, NOTE_F6       };
-float musicSymbolsBirthday[] =   {  0.5,    0.5,    1.0,    1.0,     1.0,    2.0,   0.5,     0.5,    1.0,    1.0,    1.0,   2.0,      0.5,   0.5,    1.0,    1.0,    1.0,    1.0,   2.0,     0.5,     0.5,     1.0,    1.0,    1.0,    4.0         };
-
-
+int musicFreqsDespacito[] =       {B5,  0,    FS5,  B5,   CS6,  D6,   E6,   D6,   CS6,  B5,   A5,   G5,   D6,   D6,  0,   D6,  A5,  D6,  A5,  D6,  A5,  D6,  E6,   CS6,  0,   B5,  0,    FS5,  B5,   CS6,  D6,   E6,   D6,   CS6,  B5,   A5,   G5,   D6,   D6,   E6,   D6,  0,   D6,  A5,  D6,  A5,  D6,  A5,  D6,  E6,   CS6,  0,   B5,  B5,   B5,   B5,   CS6,  D6,   CS6,  D6,   CS6, D6,   CS6, B5,  B5,   B5,   B5,   CS6,  D6,   CS6,  D6,   CS6, D6,   E6,   A5,   A5,   A5,   A5,   A5,   D6,   CS6,  D6,   CS6,  D6,  E6,   E6,   CS6, 0};
+float musicSymbolsDespacito[] =   {1.0, 0.25, 0.25, 0.25, 0.25, 0.33, 0.33, 0.33, 0.33, 0.33, 0.33, 0.75, 0.75, 1.5, 1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.25, 1.25, 3.0, 1.0, 0.25, 0.25, 0.25, 0.25, 0.33, 0.33, 0.33, 0.33, 0.33, 0.33, 0.75, 0.75, 0.25, 0.25, 1.0, 1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.25, 1.25, 3.0, 1.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.5, 0.25, 0.5, 1.0, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.5, 0.25, 0.25, 1.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.5, 0.25, 0.75, 1.0, 2.5};
+*/
 
 
 void generateTone(uint16_t noteFreq, uint16_t noteTime) {
@@ -204,16 +112,16 @@ void setup() {
 
 
   // A for() loop is used to play the whole song for one time, no matter the lenght of it
-  
+
   // Play Super Jingle Bells
   musicTempo = 250;
   musicPitch = -12;
   freqChange = pow(2, ((float)musicPitch / 12.0));
-  for (counter = 0; counter < (sizeof(musicFreqsMario) / sizeof(int)); counter++) {
+  for (counter = 0; counter < (sizeof(musicFreqsJingle) / sizeof(int)); counter++) {
     generateTone((int)(musicFreqsJingle[counter] * freqChange), (int)((60000 / musicTempo) * musicSymbolsJingle[counter]));
   }
   delay(2000);
-
+/*
   // Play Super Mario Theme
   musicTempo = 400;
   musicPitch = -12;
@@ -251,10 +159,9 @@ void setup() {
   for (counter = 0; counter < (sizeof(musicFreqsBirthday) / sizeof(int)); counter++) {
     generateTone((int)(musicFreqsBirthday[counter] * freqChange), (int)((60000 / musicTempo) * musicSymbolsBirthday[counter]));
   }
-  
+*/
 
   // Disable Stepper motor in case of using one
-  digitalWrite(BUZZER_PIN, BZ_OFF);
   digitalWrite(8, LOW);
 }
 
