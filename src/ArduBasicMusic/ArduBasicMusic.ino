@@ -153,6 +153,10 @@ int counter;
 // === Sample music ===
 
 // Super Mario
+int musicFreqsJingle[] =       {NOTE_D6, NOTE_B6, NOTE_A6, NOTE_G6, NOTE_D6, NOTE_D6, NOTE_D6, NOTE_D6, NOTE_B6, NOTE_A6, NOTE_G6, NOTE_E6, 0,  NOTE_E6, NOTE_C7, NOTE_B6, NOTE_A6, NOTE_FS6, 0,   NOTE_D7, NOTE_D7, NOTE_C7, NOTE_A6, NOTE_B6,  NOTE_D6, NOTE_B6, NOTE_A6, NOTE_G6, NOTE_D6, NOTE_D6, NOTE_D6, NOTE_D6, NOTE_B6, NOTE_A6, NOTE_G6, NOTE_E6, 0,  NOTE_E6, NOTE_C7, NOTE_B6, NOTE_A6, NOTE_D7, NOTE_D7, NOTE_D7, NOTE_D7, NOTE_E7, NOTE_D7, NOTE_C7, NOTE_A6, NOTE_G6, 0,   NOTE_B6, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_D7, NOTE_G6, NOTE_A6, NOTE_B6, NOTE_C7, NOTE_C7, NOTE_C7, NOTE_C7, NOTE_C7, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_B6, NOTE_A6, NOTE_A6, NOTE_B6, NOTE_A6, NOTE_D7, 0};
+float musicSymbolsJingle[] =   {1.0,     1.0,     1.0,     1.0,     3.0,     0.5,     0.5,     1.0,     1.0,     1.0,     1.0,     3.0,     1.0,1.0,     1.0,     1.0,     1.0,     3.0,      1.0, 1.0,     1.0,     1.0,     1.0,     4.0,      1.0,     1.0,     1.0,     1.0,     3.0,     0.5,     0.5,     1.0,     1.0,     1.0,     1.0,     3.0,     1.0,1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     3.0,     1.0, 1.0,     1.0,     2.0,     1.0,     1.0,     2.0,     1.0,     1.0,     1.5,     0.5,     3.0,     1.0,     1.0,     1.5,     0.5,     1.0,     1.0,     1.0,     0.5,     0.5,     1.0,     1.0,     1.0,     1.0,     2.0,     1.0,     1.0};
+
+// Super Mario
 int musicFreqsMario[] =       { NOTE_E7, NOTE_E7, 0, NOTE_E7, 0, NOTE_C7, NOTE_E7, 0, NOTE_G7, 0, 0,  0, NOTE_G6, 0, 0, 0, NOTE_C7, 0, 0, NOTE_G6, 0, 0, NOTE_E6, 0, 0, NOTE_A6, 0, NOTE_B6, 0, NOTE_AS6, NOTE_A6, 0, NOTE_G6, NOTE_E7, NOTE_G7, NOTE_A7, 0, NOTE_F7, NOTE_G7, 0, NOTE_E7, 0, NOTE_C7, NOTE_D7, NOTE_B6, 0, 0, NOTE_C7, 0, 0, NOTE_G6, 0, 0, NOTE_E6, 0, 0, NOTE_A6, 0, NOTE_B6, 0, NOTE_AS6, NOTE_A6, 0, NOTE_G6, NOTE_E7, NOTE_G7, NOTE_A7, 0, NOTE_F7, NOTE_G7, 0, NOTE_E7, 0, NOTE_C7, NOTE_D7, NOTE_B6, 0, 0};
 float musicSymbolsMario[] =   {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.75, 0.75, 0.75, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.75, 0.75, 0.75, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 
@@ -160,13 +164,14 @@ float musicSymbolsMario[] =   {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
 int musicFreqsCucaracha[] =       { SILENT, NOTE_C5, NOTE_C5, NOTE_C5, NOTE_F5, SILENT, NOTE_A5, SILENT, NOTE_C5, NOTE_C5, NOTE_C5, SILENT, NOTE_F5, SILENT, NOTE_A5, SILENT, NOTE_F5, NOTE_F5, NOTE_E5, NOTE_E5, NOTE_D5, NOTE_D5, NOTE_C5, SILENT, NOTE_C5, NOTE_C5, NOTE_C5, NOTE_E5, SILENT, NOTE_G5, SILENT, NOTE_C5, NOTE_C5, NOTE_C5, NOTE_E5, SILENT, NOTE_G5, SILENT, NOTE_C6, NOTE_D6, NOTE_C6, NOTE_AS5, NOTE_A5, NOTE_G5, NOTE_F5    };
 float musicSymbolsCucaracha[] =   {   0.5,   0.5,    0.5,    0.5,    0.5,    0.5,   0.5,    0.5,    0.5,   0.5,    0.5,    0.5,   1.0,    0.5,   1.5,    1.0,   0.5,    0.5,    0.5,    0.5,   0.5,     0.5,    2.0,    0.5,    0.5,   0.5,    0.5,    1.0,    0.5,   0.5,    0.5,   0.5,    0.5,    0.5,    1.0,    0.5,   1.5,    1.0,   0.5,    0.5,    0.5,    0.5,    0.5,     0.5,    1.0      };
 
-// Despacito<
+// Despacito
 int musicFreqsDespacito[] =       { NOTE_B5, SILENT, NOTE_FS5, NOTE_B5, NOTE_CS6, NOTE_D6, NOTE_E6, NOTE_D6, NOTE_CS6, NOTE_B5, NOTE_A5, NOTE_G5, NOTE_D6, NOTE_D6, SILENT, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_E6, NOTE_CS6, SILENT, NOTE_B5, SILENT, NOTE_FS5, NOTE_B5, NOTE_CS6, NOTE_D6, NOTE_E6, NOTE_D6, NOTE_CS6, NOTE_B5, NOTE_A5, NOTE_G5, NOTE_D6, NOTE_D6, NOTE_E6, NOTE_D6, SILENT, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_A5, NOTE_D6, NOTE_E6, NOTE_CS6, SILENT, NOTE_B5, NOTE_B5, NOTE_B5, NOTE_B5, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_B5, NOTE_B5, NOTE_B5, NOTE_B5, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_E6, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_A5, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_CS6, NOTE_D6, NOTE_E6, NOTE_E6, NOTE_CS6, SILENT    };
 float musicSymbolsDespacito[] =   {    1.0,  0.25,   0.25,    0.25,    0.25,   0.33,   0.33,   0.33,  0.33,    0.33,    0.33,   0.75,   0.75,   1.5,    1.0,   0.5,   0.5,    0.5,     0.5,    0.5,    0.5,    0.5,    0.25,   1.25,   3.0,    1.0,  0.25,   0.25,    0.25,    0.25,   0.33,   0.33,   0.33,  0.33,    0.33,    0.33,    0.75,   0.75,   0.25,   0.25,   1.0,   1.0,    0.5,   0.5,    0.5,     0.5,    0.5,    0.5,    0.5,    0.25,   1.25,   3.0,    1.0,   0.25,    0.25,   0.25,    0.25,  0.25,    0.25,    0.25,    0.5,   0.25,    0.5,    1.0,    0.25,    0.25,   0.25,   0.25,    0.25,   0.25,   0.25,     0.5,    0.25,   0.25,   1.25,   0.25,   0.25,   0.25,   0.25,   0.25,  0.25,    0.25,    0.25,    0.5,    0.25,   0.75,    1.0,    2.5     };
 
 // Happy Birthday
 int musicFreqsBirthday[] =       { NOTE_C6, NOTE_C6, NOTE_D6, NOTE_C6, NOTE_F6, NOTE_E6, NOTE_C6, NOTE_C6, NOTE_D6, NOTE_C6, NOTE_G6, NOTE_F6, NOTE_C6, NOTE_C6, NOTE_C7, NOTE_A6, NOTE_F6, NOTE_E6, NOTE_D6, NOTE_AS6, NOTE_AS6, NOTE_A6, NOTE_F6, NOTE_G6, NOTE_F6       };
 float musicSymbolsBirthday[] =   {  0.5,    0.5,    1.0,    1.0,     1.0,    2.0,   0.5,     0.5,    1.0,    1.0,    1.0,   2.0,      0.5,   0.5,    1.0,    1.0,    1.0,    1.0,   2.0,     0.5,     0.5,     1.0,    1.0,    1.0,    4.0         };
+
 
 
 
@@ -200,6 +205,15 @@ void setup() {
 
   // A for() loop is used to play the whole song for one time, no matter the lenght of it
   
+  // Play Super Jingle Bells
+  musicTempo = 250;
+  musicPitch = -12;
+  freqChange = pow(2, ((float)musicPitch / 12.0));
+  for (counter = 0; counter < (sizeof(musicFreqsMario) / sizeof(int)); counter++) {
+    generateTone((int)(musicFreqsJingle[counter] * freqChange), (int)((60000 / musicTempo) * musicSymbolsJingle[counter]));
+  }
+  delay(2000);
+
   // Play Super Mario Theme
   musicTempo = 400;
   musicPitch = -12;
@@ -240,6 +254,7 @@ void setup() {
   
 
   // Disable Stepper motor in case of using one
+  digitalWrite(BUZZER_PIN, BZ_OFF);
   digitalWrite(8, LOW);
 }
 
